@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NodeJS MySQL Form</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+    form { display: inline-block; text-align: left; }
+    input, button { display: block; margin: 10px 0; padding: 8px; width: 250px; }
+  </style>
+</head>
+<body>
+  <h1>🚀 Add User</h1>
+  <form action="/submit" method="post">
+    <label>Name:</label>
+    <input type="text" name="name" required>
+    
+    <label>Age:</label>
+    <input type="number" name="age" required>
+    
+    <label>City:</label>
+    <input type="text" name="city" required>
+    
+    <button type="submit">Submit</button>
+  </form>
+  <p><a href="/users">View All Users (JSON)</a></p>
+</body>
+</html>

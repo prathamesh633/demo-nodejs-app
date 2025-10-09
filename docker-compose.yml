@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  frontend:
+    # build: . 
+    image: prathameshbhujade/demo-nodejs-app:latest
+    container_name: node_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=rootpass
+      - DB_NAME=mydb
+      - DB_PORT=3306
+
+  db:
+    image: mysql:8.4
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: mydb
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootpass"]
+      timeout: 30s
+      retries: 10
+      start_period: 30s
+    # Remove the problematic command line
+    restart: unless-stopped
+
+volumes:
+  mysql-data:
