@@ -1,103 +1,101 @@
-🚀 Demo Node.js + MySQL Project (Dockerized Setup)
-🧠 Overview
+# 🚀 Demo Node.js + MySQL Project (Dockerized Setup)
 
-This project demonstrates a simple Node.js frontend connected to a MySQL database, all containerized using Docker Compose.
-It allows you to run both services in a single network and verify their connection through a browser or Postman.
+## 🧠 Overview
+This project demonstrates a simple **Node.js frontend** connected to a **MySQL database**, all containerized using **Docker Compose**.  
+You can easily run both services in a single network and verify their connection through a **browser** or **Postman**.
 
-⚙️ System Requirements
-💻 Minimum Hardware
+---
 
-CPU: 1 Core
+## ⚙️ System Requirements
 
-RAM: 1 GiB
+### 💻 Minimum Hardware
+| Resource | Specification |
+|-----------|----------------|
+| **CPU**   | 1 Core |
+| **RAM**   | 1 GiB |
+| **Storage** | 10 GiB |
 
-Storage: 10 GiB
+### ☁️ Recommended Environment
+- 🟢 **AWS EC2 Instance:** `t2.micro`
 
-☁️ Recommended Setup
+### 🧰 Software Requirements
+| Component | Version / Notes |
+|------------|----------------|
+| **OS** | Ubuntu 22.04 / 24.04 |
+| **Docker** | Latest |
+| **Docker Compose** | Latest |
+| **Docker Hub** | Required for pulling images |
 
-AWS EC2 Instance: t2.micro
+---
 
-🧰 Software Requirements
+## 🧾 Installation & Setup Guide
 
-Operating System: Ubuntu 22.04 / 24.04
+### 🪄 1️⃣ Install Docker
+Follow the official Docker documentation:  
+👉 [**Install Docker on Ubuntu**](https://docs.docker.com/engine/install/ubuntu/)
 
-Packages:
+---
 
-Docker
+### ⚙️ 2️⃣ Install Docker Compose
+If not installed already:  
+👉 [**Install Docker Compose on Ubuntu**](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04)
 
-Docker Compose
+---
 
-Docker Hub (for pulling images)
-
-🧾 Installation & Setup Guide
-1️⃣ Install Docker
-
-Follow the official Docker installation guide for Ubuntu:
-👉 Install Docker on Ubuntu
-
-2️⃣ Install Docker Compose
-
-If not installed, follow this guide:
-👉 Install Docker Compose on Ubuntu
-
-3️⃣ Create Project Directory
+### 📁 3️⃣ Create Project Directory
+```bash
 mkdir project
 cd project
 
-4️⃣ Clone the Project Repository
+### 📥 4️⃣ Clone the Project Repository
+```bash
 git clone https://github.com/prathamesh633/demo-nodejs-app.git
 
-5️⃣ Add a docker-compose.yml File
+.
 
-Inside the project folder, create a docker-compose.yml file to define and run the containers.
-
-6️⃣ Run the Containers
-
-Start the project using Docker Compose:
-
+🚀 6️⃣ Run the Containers
 docker compose up -d
 
-7️⃣ Verify Running Containers
 
-Check if both frontend and database containers are running:
+✅ This command will build and start all containers in detached mode.
 
+🧰 7️⃣ Verify Running Containers
 docker ps
 
-8️⃣ Access the Frontend Container
 
-Enter the frontend container (replace <container_id> accordingly):
+🔍 You should see your Node.js frontend and MySQL database containers listed.
+
+🐚 8️⃣ Access the Frontend Container
+
+Replace <container_id> with the actual container ID from docker ps:
 
 docker exec -it <container_id> bash
 
-9️⃣ Test Container Connectivity
+🔗 9️⃣ Test Container Connectivity
 
-Inside the frontend container, run:
+Inside the frontend container:
 
 ping <db_container_name_or_id>
 
 
-If you receive ping responses ✅, your frontend is connected to the database.
+✅ If you receive replies, your frontend is successfully connected to the database.
 
-🔗 Verify Application in Browser
+🌐 Access the Application
+Environment	URL
+Local Setup	http://localhost:3000
 
-Local Setup: http://localhost:3000
-
-Cloud Server: http://<public-ip>:3000
-
+Cloud Server	http://<public-ip>:3000
 🧩 Test Functionality
 
-Open the web UI.
+Open the application in your browser.
 
-Fill in and submit form data.
+Fill in the form and submit data.
 
-Click “View All Users (JSON)” to verify if the information is saved successfully in the database.
+Click “View All Users (JSON)” to confirm that your data is being saved to the MySQL database.
 
 🎉 Success!
 
-You’ve now successfully:
-
-Deployed the Node.js app and MySQL database using Docker Compose
-
-Verified container communication
-
-Tested full frontend–backend connectivity
+You’ve successfully:
+✅ Deployed the Node.js frontend and MySQL containers using Docker Compose
+✅ Verified container connectivity
+✅ Tested the full end-to-end data flow between the frontend and database
