@@ -96,6 +96,7 @@ Inside the frontend container:
 ping <db_container_name_or_id>
 ```
 ✅ If you receive replies, your frontend is successfully connected to the database.
+![App Screenshot](./db-packets.png)
 
 ---
 
@@ -109,6 +110,9 @@ Cloud Server
 ```bash
 http://<public-ip>:3000
 ```
+You should see the following UI.
+![App Screenshot](./frontend-UI.png) 
+
 ---
 ### 🧩 Test Functionality
 
@@ -117,6 +121,7 @@ Open the application in your browser.
 Fill in the form and submit data.
 
 Click “View All Users (JSON)” to confirm that your data is being saved to the MySQL database.
+![App Screenshot](./saved-data.png)
 
 ---
 ### 🎉 Success!
