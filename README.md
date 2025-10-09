@@ -115,6 +115,8 @@ Click “View All Users (JSON)” to confirm that your data is being saved to th
 
   You’ve successfully:
     ✅ Deployed the Node.js frontend and MySQL containers using Docker Compose
+
     ✅ Verified container connectivity
+    
     ✅ Tested the full end-to-end data flow between the frontend and database
----++
+---
