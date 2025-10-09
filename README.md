@@ -78,7 +78,7 @@ docker ps
 ```
 
 🔍 You should see your Node.js frontend and MySQL database containers listed.
-![App Screenshot](./containers-running.png)
+![App Screenshot](./images/containers-running.png)
 
 ---
 
@@ -96,7 +96,7 @@ Inside the frontend container:
 ping <db_container_name_or_id>
 ```
 ✅ If you receive replies, your frontend is successfully connected to the database.
-![App Screenshot](./db-packets.png)
+![App Screenshot](./images/db-packets.png)
 
 ---
 
@@ -111,7 +111,7 @@ Cloud Server
 http://<public-ip>:3000
 ```
 You should see the following UI.
-![App Screenshot](./frontend-UI.png) 
+![App Screenshot](./images/frontend-UI.png) 
 
 ---
 ### 🧩 Test Functionality
@@ -121,7 +121,7 @@ Open the application in your browser.
 Fill in the form and submit data.
 
 Click “View All Users (JSON)” to confirm that your data is being saved to the MySQL database.
-![App Screenshot](./saved-data.png)
+![App Screenshot](./images/saved-data.png)
 
 ---
 ### 🎉 Success!
