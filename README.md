@@ -46,56 +46,63 @@ If not installed already:
 ```bash
 mkdir project
 cd project
-
+```
 ---
 
 ### 📥 4️⃣ Clone the Project Repository
 ```bash
 git clone https://github.com/prathamesh633/demo-nodejs-app.git
-
+```
 ---
 
-🚀 6️⃣ Run the Containers
+### 🚀 6️⃣ Run the Containers
+```bash
 docker compose up -d
+```
 
 ✅ This command will build and start all containers in detached mode.
 
 
 ---
 
-🧰 7️⃣ Verify Running Containers
+### 🧰 7️⃣ Verify Running Containers
+```bash
 docker ps
+```
 
 🔍 You should see your Node.js frontend and MySQL database containers listed.
 
 ---
 
-🐚 8️⃣ Access the Frontend Container
-
+### 🐚 8️⃣ Access the Frontend Container
 Replace <container_id> with the actual container ID from docker ps:
-
+```bash
 docker exec -it <container_id> bash
-
+```
 ---
 
-🔗 9️⃣ Test Container Connectivity
+### 🔗 9️⃣ Test Container Connectivity
 
 Inside the frontend container:
-
+```bash
 ping <db_container_name_or_id>
-
+```
 ✅ If you receive replies, your frontend is successfully connected to the database.
 
 ---
 
-🌐 Access the Application
-Environment	URL
+### 🌐 Access the Application
+Local environment	URL
+```bash
 Local Setup	http://localhost:3000
+```
 
-Cloud Server	http://<public-ip>:3000
-🧩 Test Functionality
-
+Cloud Server
+```bash
+http://<public-ip>:3000
+```
 ---
+### 🧩 Test Functionality
 
 Open the application in your browser.
 
@@ -103,9 +110,8 @@ Fill in the form and submit data.
 
 Click “View All Users (JSON)” to confirm that your data is being saved to the MySQL database.
 
-
 ---
-🎉 Success!
+### 🎉 Success!
 
 You’ve successfully:
 ✅ Deployed the Node.js frontend and MySQL containers using Docker Compose
