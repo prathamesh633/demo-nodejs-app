@@ -45,6 +45,9 @@ If not installed already:
 ### 📁 3️⃣ Create Project Directory
 ```bash
 mkdir project
+```
+Go inside the project folder.
+```bash
 cd project
 ```
 ---
@@ -52,6 +55,10 @@ cd project
 ### 📥 4️⃣ Clone the Project Repository
 ```bash
 git clone https://github.com/prathamesh633/demo-nodejs-app.git
+```
+Now go inside the cloned repo.
+```bash
+cd demo-nodejs-app
 ```
 ---
 
@@ -71,6 +78,7 @@ docker ps
 ```
 
 🔍 You should see your Node.js frontend and MySQL database containers listed.
+![App Screenshot](./containers-running.png)
 
 ---
 
