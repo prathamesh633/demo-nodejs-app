@@ -103,7 +103,7 @@ ping <db_container_name_or_id>
 ### 🌐 Access the Application
 Local environment	URL
 ```bash
-Local Setup	http://localhost:3000
+http://localhost:3000
 ```
 
 Cloud Server
