@@ -64,8 +64,72 @@ app.post('/submit', (req, res) => {
   connection.query(sql, [name, age, city], (err, result) => {
     if (err) return res.send('Database error: ' + err.message);
     res.send(`
-      <h2>✅ User added successfully!</h2>
-      <p><a href="/">Go back to form</a></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Added</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta http-equiv="refresh" content="5; url=/" />
+  <style>html{color-scheme: light dark}</style>
+   </head>
+ <body>
+  <div class="min-h-screen relative">
+    <div class="absolute inset-0 -z-10" aria-hidden="true">
+      <div id="bgLayer" class="h-full w-full bg-cover bg-center transition-opacity duration-700 opacity-100"></div>
+      <div id="bgLayerNext" class="h-full w-full bg-cover bg-center absolute inset-0 transition-opacity duration-700 opacity-0"></div>
+      <div class="absolute inset-0 bg-white/60 backdrop-blur-sm"></div>
+    </div>
+
+    <div class="min-h-screen flex items-center justify-center p-4">
+      <div class="w-full max-w-md">
+        <div class="bg-white shadow-xl shadow-slate-200/70 ring-1 ring-slate-900/5 rounded-xl overflow-hidden">
+          <div class="p-6 text-center space-y-3">
+          <div class="mx-auto h-12 w-12 rounded-full bg-green-100 text-green-700 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-2.59a.75.75 0 1 0-1.06-1.06L10.5 12.44l-1.49-1.49a.75.75 0 1 0-1.06 1.06l2.02 2.02c.293.293.767.293 1.06 0l4.68-4.62Z" clip-rule="evenodd"/></svg>
+          </div>
+          <h1 class="text-2xl font-semibold text-slate-900">User added successfully</h1>
+          <p class="text-slate-600">Name: <span class="font-medium">${name}</span> • Age: <span class="font-medium">${age}</span> • City: <span class="font-medium">${city}</span></p>
+          <p class="text-xs text-slate-500">Redirecting to the form in 5 seconds…</p>
+        </div>
+          <div class="bg-slate-50 px-6 py-4 flex items-center justify-between">
+            <a href="/" class="inline-flex items-center justify-center rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2">Back to Form</a>
+            <a href="/users" class="text-indigo-600 hover:text-indigo-700 font-medium">View All Users</a>
+          </div>
+        </div>
+        <p class="text-center text-xs text-slate-500 mt-6">Node.js • Express • MySQL</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      var images = [
+        'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=1600&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1600&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1600&auto=format&fit=crop'
+      ];
+      var i = 0;
+      var layer = document.getElementById('bgLayer');
+      var next = document.getElementById('bgLayerNext');
+      function setBg(el, url){ el.style.backgroundImage = 'url(' + url + ')'; }
+      function cycle(){
+        var nextIdx = (i + 1) % images.length;
+        setBg(next, images[nextIdx]);
+        next.classList.remove('opacity-0');
+        next.classList.add('opacity-100');
+        layer.classList.remove('opacity-100');
+        layer.classList.add('opacity-0');
+        var tmp = layer; layer = next; next = tmp; i = nextIdx;
+      }
+      setBg(layer, images[0]);
+      setInterval(cycle, 8000);
+    })();
+  </script>
+ </body>
+ </html>
     `);
   });
 });
