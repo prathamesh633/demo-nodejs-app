@@ -119,6 +119,7 @@ You should see the following UI.
 Open the application in your browser.
 
 Fill in the form and submit data.
+![App Screenshot](./images/submit-user.png)
 
 Click “View All Users (JSON)” to confirm that your data is being saved to the MySQL database.
 ![App Screenshot](./images/saved-data.png)
