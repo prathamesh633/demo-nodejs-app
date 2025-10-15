@@ -1,5 +1,2 @@
-# secrets
 .env
-
-# logs
 *.log

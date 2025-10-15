@@ -1,3 +1,4 @@
+require('dotenv').config(); // add at top
 const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
@@ -11,10 +12,18 @@ app.use(express.static(path.join(__dirname, 'public'))); // serve static files
 
 // --- MySQL Connection ---
 const connection = mysql.createConnection({
+  // host: process.env.DB_HOST,
+  // user: process.env.DB_USER,
+  // password: process.env.DB_PASSWORD,
+  // database: process.env.DB_NAME
   host: process.env.DB_HOST,
-  user: process.env.DB_USER,
+  port: process.env.DB_PORT || 3306,
+  user: process.env.DB_USER,        // demo-user
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
+  database: process.env.DB_NAME,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
 function connectWithRetry() {
