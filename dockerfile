@@ -12,7 +12,8 @@ RUN npm install --only=production
 COPY . .
 
 # Make script executable
-RUN chmod +x wait-for-it.sh
+# Normalize line endings (CRLF -> LF) and make executable
+RUN sed -i 's/\r$//' wait-for-it.sh && chmod +x wait-for-it.sh
 
 EXPOSE 3000
 

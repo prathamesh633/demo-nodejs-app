@@ -15,42 +15,55 @@
     </div>
 
     <div class="min-h-screen flex items-center justify-center p-4">
-      <div class="w-full max-w-md">
+      <div class="w-full max-w-2xl">
         <div class="text-center mb-6">
-          <h1 class="text-3xl font-semibold tracking-tight text-slate-900"> Add User</h1>
-          <p class="text-slate-600 mt-2">Save a new user into the database</p>
+          <h1 class="text-3xl font-semibold tracking-tight text-slate-900">NodeJS MySQL Demo</h1>
+          <p class="text-slate-600 mt-2">Add users and view them in a dynamic list</p>
         </div>
 
-        <div class="bg-white shadow-xl shadow-slate-200/70 ring-1 ring-slate-900/5 rounded-xl overflow-hidden">
-          <div class="p-6">
-            <form action="/submit" method="post" class="space-y-4">
-              <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Name</label>
-                <input type="text" name="name" required
-                       class="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-              </div>
+        <div class="mb-3 grid grid-cols-2 gap-2">
+          <button data-tab="form" class="rounded-lg px-4 py-2 bg-indigo-600 text-white transition-colors">Form</button>
+          <button data-tab="users" class="rounded-lg px-4 py-2 bg-white text-slate-700 ring-1 ring-slate-300 transition-colors">Users</button>
+        </div>
 
-              <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">Age</label>
-                <input type="number" name="age" required min="0"
-                       class="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-              </div>
+        <div class="space-y-4">
+          <div data-panel="form" class="bg-white shadow-xl shadow-slate-200/70 ring-1 ring-slate-900/5 rounded-xl overflow-hidden">
+            <div class="p-6">
+              <form id="user-form" action="/submit" method="post" class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-slate-700 mb-1">Name</label>
+                  <input type="text" name="name" required
+                         class="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
 
-              <div>
-                <label class="block text-sm font-medium text-slate-700 mb-1">City</label>
-                <input type="text" name="city" required
-                       class="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-              </div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Age</label>
+                    <input type="number" name="age" required min="0"
+                           class="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">City</label>
+                    <input type="text" name="city" required
+                           class="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                  </div>
+                </div>
 
-              <button type="submit"
-                      class="w-full inline-flex justify-center items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2 transition-colors">
-                Submit
-              </button>
-            </form>
+                <button type="submit"
+                        class="w-full inline-flex justify-center items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2 transition-colors">
+                  Save User
+                </button>
+              </form>
+            </div>
           </div>
 
-          <div class="bg-slate-50 px-6 py-4 flex items-center justify-between">
-            <a href="/users" class="text-indigo-600 hover:text-indigo-700 font-medium">View All Users (JSON)</a>
+          <div data-panel="users" class="hidden">
+            <div class="bg-white shadow-xl shadow-slate-200/70 ring-1 ring-slate-900/5 rounded-xl overflow-hidden">
+              <div class="p-6">
+                <div id="users-empty" class="text-center text-slate-500">No users yet. Add one from the Form tab.</div>
+                <div id="users-list" class="space-y-3"></div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -58,31 +71,8 @@
       </div>
     </div>
   </div>
-
-  <script>
-    (function(){
-      var images = [
-        'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=1600&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1600&auto=format&fit=crop',
-        'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1600&auto=format&fit=crop'
-      ];
-      var i = 0;
-      var layer = document.getElementById('bgLayer');
-      var next = document.getElementById('bgLayerNext');
-      function setBg(el, url){ el.style.backgroundImage = 'url(' + url + ')'; }
-      function cycle(){
-        var nextIdx = (i + 1) % images.length;
-        setBg(next, images[nextIdx]);
-        next.classList.remove('opacity-0');
-        next.classList.add('opacity-100');
-        layer.classList.remove('opacity-100');
-        layer.classList.add('opacity-0');
-        var tmp = layer; layer = next; next = tmp; i = nextIdx;
-      }
-      setBg(layer, images[0]);
-      setInterval(cycle, 8000);
-    })();
-  </script>
+  
+  <div id="toast-root" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+  <script src="/app.js"></script>
 </body>
 </html>

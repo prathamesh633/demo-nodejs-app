@@ -1,0 +1,27 @@
+//  Prerequisites
+//  - Docker and docker-compose should be installed on the Jenkins server.
+//  - Run - sudo apt update && sudo apt install docker.io -y && sudo usermod -aG docker $USER && newgrp docker && sudo usermod -aG docker jenkins
+
+pipeline {
+    agent any
+    stages {
+        stage('git checkout') {
+            steps {
+                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/prathamesh633/demo-nodejs-app.git']]) 
+            }
+        }
+        stage('Docker-compose up') {
+            steps {
+                sh '''
+                cd demo-nodejs-app
+                docker-compose up -d --build
+                '''
+            }
+        }
+        stage('docker cleanup') {
+            steps {
+                sh ' docker system prune -a -f'
+            }
+        }
+    }
+}
