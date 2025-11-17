@@ -92,9 +92,17 @@
 
   function fetchUsers(){
     fetch('/users')
-      .then(function(r){ return r.json(); })
+      .then(function(r){ 
+        if (!r.ok) {
+          throw new Error('Failed to fetch users');
+        }
+        return r.json(); 
+      })
       .then(function(data){ renderUsers(data); })
-      .catch(function(){ /* ignore for now */ });
+      .catch(function(err){ 
+        console.error('Error fetching users:', err);
+        showToast('Failed to load users data', 'error'); 
+      });
   }
 
   // Form submit via AJAX
