@@ -98,7 +98,7 @@
         }
         return r.json(); 
       })
-      .then(function(data){ renderUsers(data); })
+      .then(function(data){ renderUsers(data.users); })
       .catch(function(err){ 
         console.error('Error fetching users:', err);
         showToast('Failed to load users data', 'error'); 

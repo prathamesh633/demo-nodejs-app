@@ -87,9 +87,6 @@ const dbConfig = {
   waitForConnections: true,
   connectionLimit: NODE_ENV === 'production' ? 10 : 5,
   queueLimit: 0,
-  acquireTimeout: 60000,
-  timeout: 60000,
-  reconnect: true,
   enableKeepAlive: true,
   keepAliveInitialDelay: 0
 };
@@ -282,8 +279,8 @@ app.get('/users', async (req, res) => {
     const total = countResult[0].total;
     
     // Get paginated users
-    const sql = 'SELECT * FROM users ORDER BY created_at DESC LIMIT ? OFFSET ?';
-    const [results] = await pool.execute(sql, [limit, offset]);
+    const sql = `SELECT * FROM users ORDER BY created_at DESC LIMIT ${parseInt(limit)} OFFSET ${parseInt(offset)}`;
+    const [results] = await pool.execute(sql);
     
     res.json({
       users: results,
