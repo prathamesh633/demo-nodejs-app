@@ -85,7 +85,7 @@ const dbConfig = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   waitForConnections: true,
-  connectionLimit: NODE_ENV === 'production' ? 10 : 5,
+  connectionLimit: NODE_ENV === 'production' ? 3 : 2, // Reduced for t2.micro
   queueLimit: 0,
   enableKeepAlive: true,
   keepAliveInitialDelay: 0
@@ -270,7 +270,7 @@ app.post('/submit', async (req, res) => {
 // API to view all users
 app.get('/users', async (req, res) => {
   const page = parseInt(req.query.page) || 1;
-  const limit = Math.min(parseInt(req.query.limit) || 50, 100); // Max 100 users
+  const limit = Math.min(parseInt(req.query.limit) || 20, 50); // Reduced from 50 to 20, max 50
   const offset = (page - 1) * limit;
   
   try {

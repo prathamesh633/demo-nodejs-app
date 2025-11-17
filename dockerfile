@@ -1,6 +1,25 @@
-FROM node:18-alpine
+FROM node:18-alpine AS builder
 
 # Install required packages
+RUN apk add --no-cache \
+    bash \
+    curl \
+    wget \
+    && rm -rf /var/cache/apk/*
+
+# Create app directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install --only=production && npm cache clean --force
+
+# Production stage
+FROM node:18-alpine
+
+# Install required runtime packages only
 RUN apk add --no-cache \
     bash \
     curl \
@@ -14,11 +33,9 @@ WORKDIR /app
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nodejs -u 1001
 
-# Copy package files
-COPY package*.json ./
-
-# Install dependencies
-RUN npm install --only=production && npm cache clean --force
+# Copy dependencies from builder
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
 
 # Copy application code
 COPY . .
