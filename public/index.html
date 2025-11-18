@@ -5,74 +5,153 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NodeJS MySQL Demo</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Fallback styles in case Tailwind CSS fails to load */
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0; 
+      padding: 0; 
+      background: #f8fafc;
+      min-height: 100vh;
+    }
+    .container { 
+      max-width: 800px; 
+      margin: 0 auto; 
+      padding: 2rem;
+    }
+    .card { 
+      background: white; 
+      border-radius: 0.5rem; 
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+      padding: 1.5rem; 
+      margin-bottom: 1rem;
+    }
+    .form-group { margin-bottom: 1rem; }
+    label { 
+      display: block; 
+      font-weight: 500; 
+      margin-bottom: 0.25rem; 
+      color: #374151;
+    }
+    input { 
+      width: 100%; 
+      padding: 0.5rem; 
+      border: 1px solid #d1d5db; 
+      border-radius: 0.375rem; 
+      font-size: 1rem;
+    }
+    input:focus { 
+      outline: none; 
+      border-color: #4f46e5; 
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+    .btn { 
+      background: #4f46e5; 
+      color: white; 
+      padding: 0.5rem 1rem; 
+      border: none; 
+      border-radius: 0.375rem; 
+      cursor: pointer; 
+      font-weight: 500;
+    }
+    .btn:hover { background: #4338ca; }
+    .btn-full { width: 100%; }
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+    .tab { 
+      padding: 0.5rem 1rem; 
+      border: 1px solid #d1d5db; 
+      background: white; 
+      border-radius: 0.375rem; 
+      cursor: pointer;
+    }
+    .tab.active { 
+      background: #4f46e5; 
+      color: white; 
+      border-color: #4f46e5;
+    }
+    .hidden { display: none; }
+    .text-center { text-align: center; }
+    h1 { 
+      font-size: 2rem; 
+      font-weight: 600; 
+      color: #111827; 
+      margin-bottom: 0.5rem;
+    }
+    .text-gray { color: #6b7280; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .user-item { 
+      background: #f9fafb; 
+      padding: 1rem; 
+      border-radius: 0.375rem; 
+      border: 1px solid #e5e7eb;
+    }
+  </style>
 </head>
 <body>
-  <div class="min-h-screen relative">
-    <div class="absolute inset-0 -z-10" aria-hidden="true">
-      <div id="bgLayer" class="h-full w-full bg-cover bg-center transition-opacity duration-700 opacity-100"></div>
-      <div id="bgLayerNext" class="h-full w-full bg-cover bg-center absolute inset-0 transition-opacity duration-700 opacity-0"></div>
-      <div class="absolute inset-0 bg-white/60 backdrop-blur-sm"></div>
+  <div class="min-h-screen relative" style="min-height: 100vh; position: relative;">
+    <div class="absolute inset-0 -z-10" aria-hidden="true" style="position: absolute; inset: 0; z-index: -10;">
+      <div id="bgLayer" class="h-full w-full bg-cover bg-center transition-opacity duration-700 opacity-100" style="height: 100%; width: 100%; background-size: cover; background-position: center; opacity: 1;"></div>
+      <div id="bgLayerNext" class="h-full w-full bg-cover bg-center absolute inset-0 transition-opacity duration-700 opacity-0" style="height: 100%; width: 100%; background-size: cover; background-position: center; position: absolute; inset: 0; opacity: 0;"></div>
+      <div class="absolute inset-0 bg-white/60 backdrop-blur-sm" style="position: absolute; inset: 0; background: rgba(255,255,255,0.6);"></div>
     </div>
 
-    <div class="min-h-screen flex items-center justify-center p-4">
-      <div class="w-full max-w-2xl">
-        <div class="text-center mb-6">
-          <h1 class="text-3xl font-semibold tracking-tight text-slate-900">NodeJS MySQL Demo</h1>
-          <p class="text-slate-600 mt-2">Add users and view them in a dynamic list</p>
+    <div class="min-h-screen flex items-center justify-center p-4 container" style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1rem;">
+      <div class="w-full max-w-2xl" style="width: 100%; max-width: 800px;">
+        <div class="text-center mb-6" style="text-align: center; margin-bottom: 1.5rem;">
+          <h1 class="text-3xl font-semibold tracking-tight text-slate-900" style="font-size: 2rem; font-weight: 600; color: #111827;">NodeJS MySQL Demo</h1>
+          <p class="text-slate-600 mt-2 text-gray" style="color: #6b7280; margin-top: 0.5rem;">Add users and view them in a dynamic list</p>
         </div>
 
-        <div class="mb-3 grid grid-cols-2 gap-2">
-          <button data-tab="form" class="rounded-lg px-4 py-2 bg-indigo-600 text-white transition-colors">Form</button>
-          <button data-tab="users" class="rounded-lg px-4 py-2 bg-white text-slate-700 ring-1 ring-slate-300 transition-colors">Users</button>
+        <div class="mb-3 grid grid-cols-2 gap-2 tabs" style="margin-bottom: 0.75rem; display: flex; gap: 0.5rem;">
+          <button data-tab="form" class="rounded-lg px-4 py-2 bg-indigo-600 text-white transition-colors tab active" style="border-radius: 0.5rem; padding: 0.5rem 1rem; background: #4f46e5; color: white; cursor: pointer;">Form</button>
+          <button data-tab="users" class="rounded-lg px-4 py-2 bg-white text-slate-700 ring-1 ring-slate-300 transition-colors tab" style="border-radius: 0.5rem; padding: 0.5rem 1rem; background: white; color: #374151; border: 1px solid #d1d5db; cursor: pointer;">Users</button>
         </div>
 
-        <div class="space-y-4">
-          <div data-panel="form" class="bg-white shadow-xl shadow-slate-200/70 ring-1 ring-slate-900/5 rounded-xl overflow-hidden">
-            <div class="p-6">
-              <form id="user-form" action="/submit" method="post" class="space-y-4">
-                <div>
-                  <label class="block text-sm font-medium text-slate-700 mb-1">Name</label>
+        <div class="space-y-4" style="display: flex; flex-direction: column; gap: 1rem;">
+          <div data-panel="form" class="bg-white shadow-xl shadow-slate-200/70 ring-1 ring-slate-900/5 rounded-xl overflow-hidden card" style="background: white; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1.5rem;">
+            <div class="p-6" style="padding: 1.5rem;">
+              <form id="user-form" action="/submit" method="post" class="space-y-4" style="display: flex; flex-direction: column; gap: 1rem;">
+                <div class="form-group">
+                  <label class="block text-sm font-medium text-slate-700 mb-1" style="display: block; font-weight: 500; margin-bottom: 0.25rem; color: #374151;">Name</label>
                   <input type="text" name="name" required
-                         class="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                         class="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 1rem;">
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                  <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Age</label>
+                <div class="grid grid-cols-2 gap-4 grid-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                  <div class="form-group">
+                    <label class="block text-sm font-medium text-slate-700 mb-1" style="display: block; font-weight: 500; margin-bottom: 0.25rem; color: #374151;">Age</label>
                     <input type="number" name="age" required min="0"
-                           class="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                           class="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 1rem;">
                   </div>
-                  <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">City</label>
+                  <div class="form-group">
+                    <label class="block text-sm font-medium text-slate-700 mb-1" style="display: block; font-weight: 500; margin-bottom: 0.25rem; color: #374151;">City</label>
                     <input type="text" name="city" required
-                           class="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                           class="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" style="width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem; font-size: 1rem;">
                   </div>
                 </div>
 
                 <button type="submit"
-                        class="w-full inline-flex justify-center items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2 transition-colors">
+                        class="w-full inline-flex justify-center items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2 transition-colors btn btn-full" style="width: 100%; background: #4f46e5; color: white; padding: 0.5rem 1rem; border: none; border-radius: 0.375rem; cursor: pointer; font-weight: 500;">
                   Save User
                 </button>
               </form>
             </div>
           </div>
 
-          <div data-panel="users" class="hidden">
-            <div class="bg-white shadow-xl shadow-slate-200/70 ring-1 ring-slate-900/5 rounded-xl overflow-hidden">
-              <div class="p-6">
-                <div id="users-empty" class="text-center text-slate-500">No users yet. Add one from the Form tab.</div>
-                <div id="users-list" class="space-y-3"></div>
-              </div>
+          <div data-panel="users" class="hidden card" style="background: white; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1.5rem;">
+            <div class="p-6" style="padding: 1.5rem;">
+              <div id="users-empty" class="text-center text-slate-500" style="text-align: center; color: #6b7280;">No users yet. Add one from the Form tab.</div>
+              <div id="users-list" class="space-y-3" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
             </div>
           </div>
         </div>
 
-        <p class="text-center text-xs text-slate-500 mt-6">Node.js • Express • MySQL</p>
+        <p class="text-center text-xs text-slate-500 mt-6" style="text-align: center; font-size: 0.75rem; color: #6b7280; margin-top: 1.5rem;">Node.js • Express • MySQL</p>
       </div>
     </div>
   </div>
   
-  <div id="toast-root" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+  <div id="toast-root" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2 pointer-events-none" style="position: fixed; bottom: 1rem; right: 1rem; z-index: 50; display: flex; flex-direction: column; gap: 0.5rem; pointer-events: none;"></div>
   <script src="/app.js"></script>
 </body>
 </html>

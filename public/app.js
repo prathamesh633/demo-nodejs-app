@@ -30,16 +30,31 @@
   function activateTab(name){
     tabs.forEach(function(t){
       var active = t.getAttribute('data-tab') === name;
+      // Update styles using both classList and inline styles for compatibility
       t.classList.toggle('bg-indigo-600', active);
       t.classList.toggle('text-white', active);
       t.classList.toggle('bg-white', !active);
       t.classList.toggle('text-slate-700', !active);
       t.classList.toggle('ring-1', !active);
       t.classList.toggle('ring-slate-300', !active);
+      t.classList.toggle('active', active);
+      
+      // Fallback inline styles
+      if (active) {
+        t.style.background = '#4f46e5';
+        t.style.color = 'white';
+        t.style.borderColor = '#4f46e5';
+      } else {
+        t.style.background = 'white';
+        t.style.color = '#374151';
+        t.style.borderColor = '#d1d5db';
+      }
     });
     panels.forEach(function(p){
       var show = p.getAttribute('data-panel') === name;
       p.classList.toggle('hidden', !show);
+      // Fallback inline styles
+      p.style.display = show ? 'block' : 'none';
     });
   }
   tabs.forEach(function(t){
@@ -52,16 +67,19 @@
     var el = document.createElement('div');
     el.className = 'pointer-events-auto max-w-xs w-full bg-white ring-1 ring-slate-900/5 shadow-xl rounded-lg px-4 py-3 flex items-start gap-3 translate-y-4 opacity-0 transition-all duration-300';
     var color = type === 'error' ? 'text-red-600 bg-red-100' : 'text-green-600 bg-green-100';
-    el.innerHTML = '\n      <div class="h-8 w-8 rounded-full flex items-center justify-center ' + color + '">\n        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">\n          ' + (type === 'error' ? '<path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.06 6.44a.75.75 0 0 0-1.06 1.06L10.94 12l-1.06 1.06a.75.75 0 1 0 1.06 1.06L12 13.06l1.06 1.06a.75.75 0 0 0 1.06-1.06L13.06 12l1.06-1.06a.75.75 0 1 0-1.06-1.06L12 10.94l-1.06-1.06Z" clip-rule="evenodd"/>' : '<path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-2.59a.75.75 0 1 0-1.06-1.06L10.5 12.44l-1.49-1.49a.75.75 0 1 0-1.06 1.06l2.02 2.02c.293.293.767.293 1.06 0l4.68-4.62Z" clip-rule="evenodd"/>') + '\n        </svg>\n      </div>\n      <div class="text-sm text-slate-800">' + message + '</div>\n    ';
+    el.innerHTML = '<div class="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center" style="flex-shrink: 0; width: 1.25rem; height: 1.25rem; border-radius: 9999px; display: flex; align-items: center; justify-content: center; ' + (type === 'error' ? 'background: #fef2f2; color: #dc2626;' : 'background: #f0fdf4; color: #16a34a;') + '"><span style="font-size: 0.75rem;">' + (type === 'error' ? '✕' : '✓') + '</span></div><div class="text-slate-700 text-sm" style="color: #374151; font-size: 0.875rem;">' + message + '</div>';
     toastRoot.appendChild(el);
     requestAnimationFrame(function(){
       el.classList.remove('translate-y-4','opacity-0');
       el.classList.add('translate-y-0','opacity-100');
+      el.style.transform = 'translateY(0)';
+      el.style.opacity = '1';
     });
     setTimeout(function(){
       el.classList.remove('opacity-100');
       el.classList.add('opacity-0');
-      setTimeout(function(){ toastRoot.removeChild(el); }, 300);
+      el.style.opacity = '0';
+      setTimeout(function(){ if (toastRoot.contains(el)) toastRoot.removeChild(el); }, 300);
     }, 2500);
   }
 
@@ -71,20 +89,24 @@
   function renderUsers(users){
     usersList.innerHTML = '';
     if(!users || users.length === 0){
+      emptyState.style.display = 'block';
       emptyState.classList.remove('hidden');
       return;
     }
+    emptyState.style.display = 'none';
     emptyState.classList.add('hidden');
     users.forEach(function(u, idx){
       var card = document.createElement('div');
-      card.className = 'transform transition-all duration-500 translate-y-3 opacity-0';
+      card.className = 'transform transition-all duration-500 translate-y-3 opacity-0 user-item';
       card.style.transitionDelay = (idx * 60) + 'ms';
-      card.innerHTML = '\n        <div class="bg-white rounded-lg ring-1 ring-slate-900/5 shadow-xl shadow-slate-200/70 p-4 flex items-center justify-between">\n          <div>\n            <div class="text-slate-900 font-medium">' + (u.name || '-') + '</div>\n            <div class="text-slate-500 text-sm">Age: ' + (u.age ?? '-') + ' • City: ' + (u.city || '-') + '</div>\n          </div>\n          <div class="text-xs text-slate-400">#' + (u.id || '') + '</div>\n        </div>\n      ';
+      card.innerHTML = '\n        <div style="background: white; border-radius: 0.5rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1rem; display: flex; align-items: center; justify-content: space-between;">\n          <div>\n            <div style="color: #111827; font-weight: 500;">' + (u.name || '-') + '</div>\n            <div style="color: #6b7280; font-size: 0.875rem;">Age: ' + (u.age ?? '-') + ' • City: ' + (u.city || '-') + '</div>\n          </div>\n          <div style="font-size: 0.75rem; color: #9ca3af;">#' + (u.id || '') + '</div>\n        </div>\n      ';
       usersList.appendChild(card);
       requestAnimationFrame(function(){
         requestAnimationFrame(function(){
           card.classList.remove('translate-y-3','opacity-0');
           card.classList.add('translate-y-0','opacity-100');
+          card.style.transform = 'translateY(0)';
+          card.style.opacity = '1';
         });
       });
     });
